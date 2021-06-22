@@ -39,10 +39,4 @@ subprojects {
     repositories {
         mavenCentral()
     }
-
-    task hello {
-        doLast {
-            task -> println "I'm $task.project.name"
-        }
-    }
 }
