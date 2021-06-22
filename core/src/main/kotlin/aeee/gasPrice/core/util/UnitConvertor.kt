@@ -6,7 +6,7 @@ import java.math.MathContext
 import java.math.RoundingMode
 import java.util.regex.Pattern
 
-class UnitConvertor {
+object UnitConvertor {
 
     private val HexReg = Pattern.compile("^0x([0-9a-f]+)")
 

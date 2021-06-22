@@ -32,10 +32,10 @@ internal class InfuraAPIDefault(
         return httpSender.post(httpEntity, clazz)
     }
 
-    override fun getEth_getBlockByNumber(): GasPrice? {
+    override fun getEth_getBlockByNumber(): GasPrice {
         val params = JSONArray()
         params.put("latest")
         params.put(true)
-        return request(GasPrice::class.java, InfuraMethod.ETH_GET_BLOCK_BY_NUMBER, params)
+        return request(GasPrice::class.java, InfuraMethod.ETH_GET_BLOCK_BY_NUMBER, params) ?: GasPrice.Empty
     }
 }

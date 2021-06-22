@@ -2,8 +2,16 @@ package aeee.gasPrice.core.vo
 
 class GasPrice {
 
-    private lateinit var jsonrpc: String
-    private lateinit var id: String
+    companion object {
+        val Empty = GasPrice().apply {
+            jsonrpc = "-1"
+            id = "-1"
+            result = Result.Empty
+        }
+    }
 
-    private lateinit var result: Result
+    lateinit var jsonrpc: String
+    lateinit var id: String
+
+    lateinit var result: Result
 }

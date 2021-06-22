@@ -4,5 +4,5 @@ import aeee.gasPrice.core.vo.GasPrice
 
 interface InfuraAPI {
 
-    fun getEth_getBlockByNumber(): GasPrice?
+    fun getEth_getBlockByNumber(): GasPrice
 }
