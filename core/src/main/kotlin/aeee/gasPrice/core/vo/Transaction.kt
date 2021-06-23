@@ -11,9 +11,11 @@ class Transaction {
         this.gasPrice = gasPrice
     }
 
-    var gasPrice: Any = BigDecimal.ZERO
+    private var _gasPrice: BigDecimal =  BigDecimal.ZERO
+    var gasPrice: Any
+        get() = _gasPrice
         set(value) {
-            field = handleNumber(value)
+            _gasPrice = handleNumber(value)
         }
 
     private fun <T> handleNumber(value: T) = when(value) {

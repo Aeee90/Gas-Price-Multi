@@ -11,9 +11,11 @@ class Result {
         }
     }
 
-    var number: Any = BigDecimal.ZERO
+    private var _number: BigDecimal =  BigDecimal.ZERO
+    var number: Any
+        get() = _number
         set(value) {
-            field = handleNumber(value)
+            _number = handleNumber(value)
         }
     var transactions: List<Transaction> = ArrayList()
 
