@@ -15,7 +15,7 @@ object UnitConvertor {
         return if (matcher.find()) matcher.group(1) else "0"
     }
 
-    fun convertHexStrToDecimalBigDecimal(hex: String): BigDecimal = getHexStr(hex).toBigDecimal(MathContext.UNLIMITED)
+    fun convertHexStrToDecimalBigDecimal(hex: String): BigDecimal = convertHexStrToDecimalLong(hex).toBigDecimal(MathContext.UNLIMITED)
 
     fun convertHexStrToDecimalLong(hex: String): Long = getHexStr(hex).toLong(16)
 

@@ -35,16 +35,16 @@ internal class GasPriceServiceDefault(
         var max = BigDecimal.ZERO
         var min = BigDecimal.ZERO
         val size = transactionEntities.size
-        if (!transactionEntities.isEmpty()) {
+        if (transactionEntities.isNotEmpty()) {
             val counter: MutableMap<BigDecimal, Long> = HashMap()
-            val first: BigDecimal = transactionEntities[0].gasPrice
+            val first: BigDecimal = transactionEntities[0].gasPrice as BigDecimal
             max = first
             min = max
             sum = min
             counter[UnitConvertor.convertUnitWithRoundHalf(first, NumberUnit.WEI, NumberUnit.GIGA, 1)] = 1L
             for (i in 1 until size) {
                 val tr: Transaction = transactionEntities[i]
-                val gp: BigDecimal = tr.gasPrice
+                val gp: BigDecimal = tr.gasPrice as BigDecimal
                 sum = sum.add(gp)
                 if (gp.compareTo(max) > 0) max = gp
                 if (gp.compareTo(min) < 0) min = gp
@@ -66,7 +66,7 @@ internal class GasPriceServiceDefault(
             )
             blockInfoDTO.average = ave
         }
-        blockInfoDTO.number = result.number
+        blockInfoDTO.number = result.number as BigDecimal
         blockInfoDTO.size = size.toLong()
         blockInfoDTO.min = UnitConvertor.convertUnitWithRoundHalf(min, NumberUnit.WEI, NumberUnit.GIGA, 1)
         blockInfoDTO.max = UnitConvertor.convertUnitWithRoundHalf(max, NumberUnit.WEI, NumberUnit.GIGA, 1)
