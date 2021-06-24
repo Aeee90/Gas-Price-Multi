@@ -9,6 +9,7 @@ import aeee.gasPrice.core.util.UnitConvertor
 import aeee.gasPrice.core.vo.GasPrice
 import aeee.gasPrice.core.vo.Transaction
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.stream.Collectors
@@ -18,13 +19,12 @@ internal class GasPriceServiceDefault(
     private val infuraAPI: InfuraAPI
 ): GasPriceService {
 
-    override fun manufactureGasPrice(): BlockInfoDTO {
-        val gasPriceVO = infuraAPI.getEth_getBlockByNumber()
-        return this.manufactureGasPrice(gasPriceVO)
+    override fun manufactureGasPrice(): Mono<BlockInfoDTO> {
+        return infuraAPI.getEth_getBlockByNumber().flatMap(this::manufactureGasPrice)
     }
 
-    override fun manufactureGasPrice(gasPriceVO: GasPrice): BlockInfoDTO {
-        if(gasPriceVO == GasPrice.Empty) return BlockInfoDTO()
+    override fun manufactureGasPrice(gasPriceVO: GasPrice): Mono<BlockInfoDTO> {
+        if(gasPriceVO == GasPrice.Empty) return Mono.just(BlockInfoDTO())
 
         val result = gasPriceVO.result
         val transactionEntities = result.transactions
@@ -71,6 +71,6 @@ internal class GasPriceServiceDefault(
         blockInfoDTO.min = UnitConvertor.convertUnitWithRoundHalf(min, NumberUnit.WEI, NumberUnit.GIGA, 1)
         blockInfoDTO.max = UnitConvertor.convertUnitWithRoundHalf(max, NumberUnit.WEI, NumberUnit.GIGA, 1)
 
-        return blockInfoDTO
+        return Mono.just(blockInfoDTO)
     }
 }
