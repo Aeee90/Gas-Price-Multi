@@ -1,10 +1,11 @@
 package aeee.gasPrice.core.api
 
-import org.junit.jupiter.api.Assertions
+import aeee.gasPrice.core.vo.GasPrice
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import reactor.test.StepVerifier
 
 @SpringBootTest
 class InfuraAPITest {
@@ -17,9 +18,10 @@ class InfuraAPITest {
     fun testConnectionInfuraAPI() {
         val gasPrice = infuraAPI.getEth_getBlockByNumber()
 
-        println(gasPrice)
-
-        Assertions.assertNotNull(gasPrice)
-
+        StepVerifier.create(gasPrice)
+            .assertNext { gasPrice ->
+                println(gasPrice)
+                GasPrice.Empty != gasPrice
+            }.verifyComplete()
     }
 }

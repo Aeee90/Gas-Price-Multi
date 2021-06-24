@@ -18,14 +18,13 @@ internal class InfuraAPIHttpSender : HttpSender {
             contentType = MediaType.APPLICATION_JSON
     }
 
-    override fun hasError(response: ClientHttpResponse): Boolean {
-        return try {
-            val status = response.statusCode.series()
-            status == Series.CLIENT_ERROR || status == Series.SERVER_ERROR
-        } catch (e: IOException) {
-            true
-        }
+    override fun hasError(response: ClientHttpResponse): Boolean = try {
+        val status = response.statusCode.series()
+        status == Series.CLIENT_ERROR || status == Series.SERVER_ERROR
+    } catch (e: IOException) {
+        true
     }
+
 
     override fun handleError(response: ClientHttpResponse) {
         throw InfuraErrorException(response)

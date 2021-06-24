@@ -16,6 +16,7 @@ dependencies {
     compile group: 'org.json', name: 'json', version: '20180813'
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation group: 'io.projectreactor', name: 'reactor-test', version: '3.1.0.RELEASE'
 
 }
 

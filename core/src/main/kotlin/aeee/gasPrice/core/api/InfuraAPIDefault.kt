@@ -7,6 +7,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
 internal class InfuraAPIDefault(
@@ -14,28 +15,26 @@ internal class InfuraAPIDefault(
 ): InfuraAPI {
 
     private fun getBaseParameter(method: InfuraMethod): JSONObject {
-        val json = JSONObject()
-        json.put("jsonrpc1", "2.0")
-        json.put("method", method.value)
-        json.put("id", 1)
-        return json
+        val params = JSONObject()
+        params.put("jsonrpc1", "2.0")
+        params.put("method", method.value)
+        params.put("id", 1)
+        return params
     }
 
-    private fun <T> request(clazz: Class<T>, method: InfuraMethod, params: JSONArray): T? {
-        val json = getBaseParameter(method)
-        json.put("params", params)
-        return request(clazz, json.toString())
+    private fun <T> request(clazz: Class<T>, method: InfuraMethod, params: JSONArray): Mono<T> {
+        val param = getBaseParameter(method)
+        param.put("params", params)
+        return request(clazz, param.toString())
     }
 
-    private fun <T> request(clazz: Class<T>, param: String): T? {
-        val httpEntity= httpSender.getHttpEntity(param)
-        return httpSender.post(httpEntity, clazz)
-    }
+    private fun <T> request(clazz: Class<T>, param: String): Mono<T> = httpSender.post(param, clazz)
 
-    override fun getEth_getBlockByNumber(): GasPrice {
+    override fun getEth_getBlockByNumber(): Mono<GasPrice> {
         val params = JSONArray()
         params.put("latest")
         params.put(true)
-        return request(GasPrice::class.java, InfuraMethod.ETH_GET_BLOCK_BY_NUMBER, params) ?: GasPrice.Empty
+        return request(GasPrice::class.java, InfuraMethod.ETH_GET_BLOCK_BY_NUMBER, params)
+            .defaultIfEmpty(GasPrice.Empty)
     }
 }

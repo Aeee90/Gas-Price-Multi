@@ -1,44 +1,34 @@
 package aeee.gasPrice.core.api.config
 
-import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.lang.Nullable
 import org.springframework.web.client.ResponseErrorHandler
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.reactive.function.BodyInserters
+import org.springframework.web.reactive.function.client.*
+import reactor.core.publisher.Mono
 import java.net.URI
-
-abstract class HttpSender: ResponseErrorHandler {
-
-    private val uri: URI;
-    private var headers: HttpHeaders = HttpHeaders()
-    private val restTemplate = RestTemplate()
-
-    constructor(uri: URI) { this.uri = uri }
-
-    constructor(uri: String) { this.uri = URI.create(uri) }
+import java.util.function.Consumer
 
 
-    protected open fun _setHeader() {
-        headers = setHeader(headers)
+abstract class HttpSender(uri: URI) : ResponseErrorHandler {
+
+    private val webClient: WebClient
+    constructor(uri: String): this(URI.create(uri))
+
+    init {
+        webClient = WebClient.builder()
+        .baseUrl(uri.toString())
+        .defaultHeaders(_setHeader())
+        .build()
     }
+
+    private fun _setHeader(): Consumer<HttpHeaders> = Consumer { setHeader(it) }
 
     protected abstract fun setHeader(headers: HttpHeaders): HttpHeaders
 
-
-    open fun <T> getHttpEntity(data: T): HttpEntity<T> {
-        return HttpEntity(data, headers)
-    }
-
-    protected open fun <T> getHttpEntity(data: T, customizeHttpHeader: CustomizeHttpHeader): HttpEntity<T> {
-        val newHeaders = setHeader(HttpHeaders())
-        return HttpEntity(data, customizeHttpHeader.customizeHttpHeaders(newHeaders))
-    }
-
-    open fun <T> post(@Nullable request: Any, clazz: Class<T>): T? {
-        return restTemplate.postForEntity(uri, request, clazz).body
-    }
-
-    protected interface CustomizeHttpHeader {
-        fun customizeHttpHeaders(headers: HttpHeaders): HttpHeaders
-    }
+    open fun <T> post(@Nullable request: Any, clazz: Class<T>): Mono<T> = webClient
+            .post()
+            .body(BodyInserters.fromValue(request))
+            .retrieve()
+            .bodyToMono(clazz)
 }
