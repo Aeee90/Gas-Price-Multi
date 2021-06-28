@@ -1,7 +1,7 @@
 package aeee.gasPrice.api.service
 
 import aeee.gasPrice.api.dto.BlockInfoDTO
-import aeee.gasPrice.core.vo.GasPrice
+import aeee.gasPrice.core.entity.GasPrice
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 

@@ -3,8 +3,8 @@ package aeee.gasPrice.api.service
 import aeee.gasPrice.api.SpeedTime
 import aeee.gasPrice.core.api.InfuraAPI
 import aeee.gasPrice.core.util.UnitConvertor
-import aeee.gasPrice.core.vo.GasPrice
-import aeee.gasPrice.core.vo.Transaction
+import aeee.gasPrice.core.entity.GasPrice
+import aeee.gasPrice.core.entity.Transaction
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +34,7 @@ class GasPriceServiceTest {
     @DisplayName("test Logic")
     fun testLogic() {
         val gasPrice = GasPrice().apply {
-            result = aeee.gasPrice.core.vo.Result().apply {
+            result = aeee.gasPrice.core.entity.Result().apply {
                 number = BigDecimal(12617125)
                 transactions = arrayListOf(
                     Transaction(BigDecimal(3000000000L)),

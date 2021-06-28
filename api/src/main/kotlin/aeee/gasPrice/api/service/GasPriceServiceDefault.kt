@@ -6,8 +6,8 @@ import aeee.gasPrice.api.dto.comparator.TransactionCountDTOComparator
 import aeee.gasPrice.core.api.InfuraAPI
 import aeee.gasPrice.core.enums.NumberUnit
 import aeee.gasPrice.core.util.UnitConvertor
-import aeee.gasPrice.core.vo.GasPrice
-import aeee.gasPrice.core.vo.Transaction
+import aeee.gasPrice.core.entity.GasPrice
+import aeee.gasPrice.core.entity.Transaction
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import java.math.BigDecimal

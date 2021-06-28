@@ -1,6 +1,6 @@
 package aeee.gasPrice.core.api
 
-import aeee.gasPrice.core.vo.GasPrice
+import aeee.gasPrice.core.entity.GasPrice
 import reactor.core.publisher.Mono
 
 interface InfuraAPI {

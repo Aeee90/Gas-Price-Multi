@@ -1,4 +1,4 @@
-package aeee.gasPrice.core.vo
+package aeee.gasPrice.core.entity
 
 class GasPrice {
 

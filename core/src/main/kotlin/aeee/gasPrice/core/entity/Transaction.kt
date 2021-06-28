@@ -1,4 +1,4 @@
-package aeee.gasPrice.core.vo
+package aeee.gasPrice.core.entity
 
 import aeee.gasPrice.core.util.UnitConvertor
 import java.math.BigDecimal

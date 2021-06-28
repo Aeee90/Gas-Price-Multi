@@ -1,6 +1,6 @@
 package aeee.gasPrice.core.api
 
-import aeee.gasPrice.core.vo.GasPrice
+import aeee.gasPrice.core.entity.GasPrice
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

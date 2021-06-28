@@ -2,7 +2,7 @@ package aeee.gasPrice.core.api
 
 import aeee.gasPrice.core.api.config.HttpSender
 import aeee.gasPrice.core.enums.InfuraMethod
-import aeee.gasPrice.core.vo.GasPrice
+import aeee.gasPrice.core.entity.GasPrice
 import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Qualifier
