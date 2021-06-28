@@ -24,13 +24,6 @@ class GasPriceServiceTest {
     private lateinit var infuraApi: InfuraAPI
 
     @Test
-    fun testToConvert16to10() {
-        assert(
-            UnitConvertor.convertHexStrToDecimalBigDecimal("0x104c533c00") == BigDecimal("70000000000")
-        )
-    }
-
-    @Test
     @DisplayName("test Logic")
     fun testLogic() {
         val gasPrice = GasPrice().apply {
