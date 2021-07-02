@@ -19,9 +19,8 @@ class InfuraAPITest {
         val gasPrice = infuraAPI.getEth_getBlockByNumber()
 
         StepVerifier.create(gasPrice)
-            .assertNext { gasPrice ->
-                println(gasPrice)
-                GasPrice.Empty != gasPrice
-            }.verifyComplete()
+            .assertNext { gasPrice -> GasPrice.Empty != gasPrice }
+            .expectComplete()
+            .verify()
     }
 }

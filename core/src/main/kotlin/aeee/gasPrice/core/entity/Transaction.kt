@@ -5,8 +5,6 @@ import java.math.BigDecimal
 
 class Transaction {
 
-    constructor() {}
-
     constructor(gasPrice: BigDecimal) {
         this.gasPrice = gasPrice
     }

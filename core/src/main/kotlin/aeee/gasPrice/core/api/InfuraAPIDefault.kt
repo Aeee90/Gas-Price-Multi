@@ -1,6 +1,6 @@
 package aeee.gasPrice.core.api
 
-import aeee.gasPrice.core.api.config.HttpSender
+import aeee.gasPrice.core.api.sender.HttpSender
 import aeee.gasPrice.core.enums.InfuraMethod
 import aeee.gasPrice.core.entity.GasPrice
 import org.json.JSONArray
