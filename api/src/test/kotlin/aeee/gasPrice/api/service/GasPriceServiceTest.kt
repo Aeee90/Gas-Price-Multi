@@ -5,6 +5,8 @@ import aeee.gasPrice.core.api.InfuraAPI
 import aeee.gasPrice.core.util.UnitConvertor
 import aeee.gasPrice.core.entity.GasPrice
 import aeee.gasPrice.core.entity.Transaction
+import org.hamcrest.Matchers.`is`
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,25 +42,25 @@ class GasPriceServiceTest {
             }
         }
 
-        StepVerifier.create(gasPriceService.manufactureGasPrice(gasPrice))
-            .assertNext {
-                val transactionCounters = it.transactionCounter
-                it.number == BigDecimal(12617125)
-                && it.size == 6L
-                && it.average == BigDecimal("2.3")
-                && it.max == BigDecimal("3.0")
-                && it.min == BigDecimal("1.0")
+        val blockInfoDTO = gasPriceService.manufactureGasPrice(gasPrice)
+        val transactionCounters = blockInfoDTO.transactionCounter
 
-                && transactionCounters[0].gasPrice == BigDecimal("1.0")
-                && transactionCounters[0].count == 1L
+        Assertions.assertEquals(blockInfoDTO.number, BigDecimal(12617125));
+        Assertions.assertEquals(blockInfoDTO.size, 6L);
+        Assertions.assertEquals(blockInfoDTO.average, BigDecimal("2.3"));
+        Assertions.assertEquals(blockInfoDTO.max, BigDecimal("3.0"));
+        Assertions.assertEquals(blockInfoDTO.min, BigDecimal("1.0"));
 
-                && transactionCounters[1].gasPrice == BigDecimal("2.0")
-                && transactionCounters[1].count == 2L
 
-                && transactionCounters[2].gasPrice == BigDecimal("3.0")
-                && transactionCounters[2].count == 3L
-            }
-            .verifyComplete()
+        Assertions.assertEquals(transactionCounters[0].gasPrice, BigDecimal("1.0"));
+        Assertions.assertEquals(transactionCounters[0].count, 1L);
+
+        Assertions.assertEquals(transactionCounters[1].gasPrice, BigDecimal("2.0"));
+        Assertions.assertEquals(transactionCounters[1].count, 2L);
+
+        Assertions.assertEquals(transactionCounters[2].gasPrice, BigDecimal("3.0"));
+        Assertions.assertEquals(transactionCounters[2].count, 3L);
+
     }
 
     @Test
@@ -77,7 +79,7 @@ class GasPriceServiceTest {
         var sum: Long = 0
         for (gasPrice in testData) {
             sum += SpeedTime.measure("count logic") {
-                gasPrice.flatMap(gasPriceService::manufactureGasPrice)
+                gasPrice.subscribe(gasPriceService::manufactureGasPrice)
             }
         }
 

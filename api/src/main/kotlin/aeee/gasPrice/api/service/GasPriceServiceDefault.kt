@@ -8,7 +8,10 @@ import aeee.gasPrice.core.enums.NumberUnit
 import aeee.gasPrice.core.util.UnitConvertor
 import aeee.gasPrice.core.entity.GasPrice
 import aeee.gasPrice.core.entity.Transaction
+import aeee.gasPrice.core.exception.APIException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -19,12 +22,21 @@ internal class GasPriceServiceDefault(
     private val infuraAPI: InfuraAPI
 ): GasPriceService {
 
-    override fun manufactureGasPrice(): Mono<BlockInfoDTO> {
-        return infuraAPI.getEth_getBlockByNumber().flatMap(this::manufactureGasPrice)
+    override fun manufactureGasPrice(): Mono<ServerResponse> {
+        return infuraAPI.getEth_getBlockByNumber()
+            .flatMap { gasPrice ->
+                ServerResponse.ok()
+                    .bodyValue(manufactureGasPrice(gasPrice))
+            }
+            .onErrorResume {
+                println("he: ${it.message}")
+                if (it is APIException) ServerResponse.status(it.httpStatus).bodyValue(it.message)
+                else ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(it.message)
+            }
     }
 
-    override fun manufactureGasPrice(gasPriceVO: GasPrice): Mono<BlockInfoDTO> {
-        if(gasPriceVO == GasPrice.Empty) return Mono.just(BlockInfoDTO())
+    override fun manufactureGasPrice(gasPriceVO: GasPrice): BlockInfoDTO {
+        if(gasPriceVO == GasPrice.Empty) return BlockInfoDTO()
 
         val result = gasPriceVO.result
         val transactionEntities = result.transactions
@@ -71,6 +83,6 @@ internal class GasPriceServiceDefault(
         blockInfoDTO.min = UnitConvertor.convertUnitWithRoundHalf(min, NumberUnit.WEI, NumberUnit.GIGA, 1)
         blockInfoDTO.max = UnitConvertor.convertUnitWithRoundHalf(max, NumberUnit.WEI, NumberUnit.GIGA, 1)
 
-        return Mono.just(blockInfoDTO)
+        return blockInfoDTO
     }
 }

@@ -20,6 +20,7 @@ abstract class HttpSender(uri: URI) {
         webClient = WebClient.builder()
         .baseUrl(uri.toString())
         .defaultHeaders(_setHeader())
+        .codecs { configurer -> configurer.defaultCodecs().maxInMemorySize(-1) }
         .build()
     }
 
@@ -31,10 +32,10 @@ abstract class HttpSender(uri: URI) {
         webClient.post()
             .body(BodyInserters.fromValue(request))
             .exchangeToMono {
-                it.bodyToMono(String::class.java).log()
+                println(it.statusCode().value())
                 when(it.statusCode()) {
                     HttpStatus.OK -> it.bodyToMono(clazz)
                     else -> Mono.error(APIException(it.statusCode()))
                 }
-            }
+            }.onErrorResume { throw it }
 }

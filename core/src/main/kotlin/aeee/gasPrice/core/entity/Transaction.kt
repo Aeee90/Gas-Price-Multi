@@ -5,6 +5,8 @@ import java.math.BigDecimal
 
 class Transaction {
 
+    constructor() {}
+
     constructor(gasPrice: BigDecimal) {
         this.gasPrice = gasPrice
     }
@@ -16,9 +18,11 @@ class Transaction {
             _gasPrice = handleNumber(value)
         }
 
-    private fun <T> handleNumber(value: T) = when(value) {
-        is BigDecimal -> value
-        is String -> UnitConvertor.convertHexStrToDecimalBigDecimal(value)
-        else -> BigDecimal.ZERO
+    private fun <T> handleNumber(value: T): BigDecimal {
+        return when(value) {
+            is BigDecimal -> value
+            is String -> UnitConvertor.convertHexStrToDecimalBigDecimal(value)
+            else -> BigDecimal.ZERO
+        }
     }
 }

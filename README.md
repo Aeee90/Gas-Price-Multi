@@ -25,11 +25,10 @@ count:1}, {gasprice:1.8, count:2}, ... ] 이런식으로 gas price 로 그룹핑
 
 ## Built With
 (IDE에서는 Lombok PlugIn 필요합니다.)
-- java 1.8
-- Spring Boot 2.1.6.RELEASE
+- java 1.11
+- Spring Boot 2.5
 - Gradle
 - Jackson(json Library)
-- Lombok
 
 ## Authors
 Aeee

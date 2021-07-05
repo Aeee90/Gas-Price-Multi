@@ -35,6 +35,5 @@ internal class InfuraAPIDefault(
         params.put("latest")
         params.put(true)
         return request(GasPrice::class.java, InfuraMethod.ETH_GET_BLOCK_BY_NUMBER, params)
-            .defaultIfEmpty(GasPrice.Empty)
     }
 }
