@@ -11,12 +11,17 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.web.WebAppConfiguration
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import java.math.BigDecimal
 import java.util.*
 
-@SpringBootTest
+@SpringBootTest(
+    properties = ["spring.cloud.config.enabled=false"]
+)
 class GasPriceServiceTest {
 
     @Autowired
@@ -63,7 +68,7 @@ class GasPriceServiceTest {
 
     }
 
-    @Test
+//    @Test
     @DisplayName("test Average Speed Less Than 1000ms")
     fun testAverageSpeedLessThan1000ms() {
         val testData: List<Mono<GasPrice>> = Arrays.asList(

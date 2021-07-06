@@ -1,3 +1,4 @@
 rootProject.name = 'gas-price-multi'
 
 include "core", "api"
+include "confsvr"

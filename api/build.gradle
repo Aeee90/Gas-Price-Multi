@@ -11,6 +11,10 @@ dependencies {
     //spring
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.5.1'
+    //spring cloud config
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-client', version: '3.0.4'
+
 
     //kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
